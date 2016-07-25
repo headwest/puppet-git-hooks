@@ -26,7 +26,7 @@ rm -f $error_msg
 if which metadata-json-lint > /dev/null 2>&1; then
     if [[ "$(basename $1)" == 'metadata.json' ]]; then
         metadata-json-lint $1 2> $error_msg  >&2
-        if [ $? -ne 0 ]; then 
+        if [ $? -ne 0 ]; then
             cat $error_msg | sed -e "s/^/$(tput setaf 1)/" -e "s/$/$(tput sgr0)/"
             syntax_errors=`expr $syntax_errors + 1`
             echo "$(tput setaf 1)Error: json syntax error in $module_path (see above)$(tput sgr0)"
