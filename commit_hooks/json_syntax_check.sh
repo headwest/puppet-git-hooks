@@ -14,12 +14,12 @@ else
 fi
 
 # Check json file syntax
-echo "$(tput setaf 6)Checking json syntax for $module_path...$(tput sgr0)"
+echo "Checking json syntax for $module_path..."
 ruby -e "require 'rubygems'; require 'json'; JSON.parse(File.read('$1'))" 2> $error_msg > /dev/null
 if [ $? -ne 0 ]; then
-    cat $error_msg | sed -e "s/^/$(tput setaf 1)/" -e "s/$/$(tput sgr0)/"
+    cat $error_msg
     syntax_errors=`expr $syntax_errors + 1`
-    echo "$(tput setaf 1)Error: json syntax error in $module_path (see above)$(tput sgr0)"
+    echo "Error: json syntax error in $module_path (see above)"
 fi
 rm -f $error_msg
 
@@ -27,16 +27,16 @@ if which metadata-json-lint > /dev/null 2>&1; then
     if [[ "$(basename $1)" == 'metadata.json' ]]; then
         metadata-json-lint $1 2> $error_msg  >&2
         if [ $? -ne 0 ]; then
-            cat $error_msg | sed -e "s/^/$(tput setaf 1)/" -e "s/$/$(tput sgr0)/"
+            cat $error_msg
             syntax_errors=`expr $syntax_errors + 1`
-            echo "$(tput setaf 1)Error: json syntax error in $module_path (see above)$(tput sgr0)"
+            echo "Error: json syntax error in $module_path (see above)"
         fi
     fi
 fi
 
 if [ "$syntax_errors" -ne 0 ]; then
     echo
-    echo "$(tput setaf 1)*** Commit will be aborted.$(tput sgr0)"
+    echo "*** Commit will be aborted."
     exit 1
 fi
 
